@@ -1,12 +1,40 @@
-import { Model } from "sequelize-typescript";
+import {
+  Column,
+  DataType,
+  Model,
+  Table,
+  PrimaryKey,
+  AutoIncrement,
+  AllowNull,
+  BelongsToMany,
+} from "sequelize-typescript";
+import { Roles } from "../roles/roles.model.js";
+import { UsersRole } from "../users.roles.model/users.roles.model.js";
 
-interface T {
-  id: number;
+interface UserInfo {
   name: string;
   email: string;
   password: string;
 }
 
-export class Users extends Model<Users, T> {}
-//второй тип Jenerics это данные для создания сущности, а первый тип Jenerics это данные которые мы получаем из функции findAll, findOne и т.д., чертеж
-// Мы наследуем методы из Model в Users, для того чтобы мы могли создавать сущности и получать те же методы из Model
+@Table({ tableName: "users" })
+export class Users extends Model<Users, UserInfo> {
+  @PrimaryKey
+  @AutoIncrement
+  @Column(DataType.INTEGER)
+  declare id: number;
+
+  @AllowNull(false)
+  @Column(DataType.TEXT)
+  declare name: string;
+
+  @AllowNull(false)
+  @Column(DataType.TEXT)
+  declare email: string;
+
+  @Column({ type: DataType.BOOLEAN, defaultValue: false })
+  declare banned: boolean;
+
+  @BelongsToMany(() => Roles, () => UsersRole)
+  declare roles: Roles[];
+}

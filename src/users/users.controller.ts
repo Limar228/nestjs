@@ -1,13 +1,19 @@
-import { Controller, Post, Body } from "@nestjs/common";
+import { Controller, Post, Body, Get } from "@nestjs/common";
 import { UsersService } from "./users.service.js";
+import { Dto } from "./dto/create.user.dto.js";
 
 @Controller("users")
 export class UsersController {
-  constructor() {}
+  constructor(private usersService: UsersService) {}
+
   @Post("/create")
-  createUser(@Body() userData: any) {
-    // userDate DTO != any, we will create a DTO later
-    UsersService.createUser(userData); //solve this problem, we need to inject the UsersService into the UsersController
-    return { message: "User created successfully", data: userData };
+  async createUser(@Body() userData: Dto) {
+    const data = await this.usersService.createUser(userData);
+    return { message: "User created successfully", data: data };
+  }
+
+  @Get()
+  getAll() {
+    return this.usersService.getAllUser();
   }
 }

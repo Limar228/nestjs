@@ -6,6 +6,10 @@ import { UsersModule } from "./users/users.module.js";
 import { UsersController } from "./users/users.controller.js";
 import { UsersService } from "./users/users.service.js";
 import { SequelizeModule } from "@nestjs/sequelize";
+import { Users } from "./users/users.model.js";
+import { RolesModule } from "./roles/roles.module.js";
+import { UsersRole } from "./users.roles.model/users.roles.model.js";
+import { Roles } from "./roles/roles.model.js";
 
 @Module({
   imports: [
@@ -19,11 +23,12 @@ import { SequelizeModule } from "@nestjs/sequelize";
       port: Number(process.env.DB_PORT),
       username: process.env.DB_USERNAME,
       database: process.env.DB_NAME,
-      models: [],
-      autoLoadModels: true, // Автоматическое создание таблиц на основе моделей
+      autoLoadModels: true,
+      synchronize: true, //
     }),
+    RolesModule,
   ],
-  controllers: [AppController, UsersController],
-  providers: [AppService, UsersService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
