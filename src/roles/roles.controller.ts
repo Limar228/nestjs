@@ -13,8 +13,8 @@ export class RolesController {
   }
 
   @Get("/:id")
-  async getUser(@Param("id") id: number) {
-    return this.rolesService.getUser(id);
+  async getRole(@Param("id") id: number) {
+    return this.rolesService.getRole(id);
   }
 
   @Post("/create")

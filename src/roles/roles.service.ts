@@ -5,22 +5,15 @@ import { Roles } from "./roles.model.js";
 
 @Injectable()
 export class RolesService {
-  constructor(@InjectModel(Roles) private userRepository: typeof Roles) {}
+  constructor(@InjectModel(Roles) private roleRepository: typeof Roles) {}
 
   async getAllRoles() {
-    return this.userRepository.findAll();
-    //Что за типы в userRep И почему именно типы из Users?
-    //вернуть всех пользователей
+    return this.roleRepository.findAll();
   }
-  async getUser(id: number) {
-    return this.userRepository.findOne({ where: { id: id } });
-    //Что за типы в userRep И почему именно типы из Users?
-    //вернуть пользователя по id
+  async getRole(id: number) {
+    return await this.roleRepository.findOne({ where: { id: id } });
   }
   async createRole(roleData: DtoRoles) {
-    const data = await this.userRepository.create(roleData);
-    return data;
-    //Вернуть только пользователя
-    //Что за типы в userRep И почему именно типы из Users?
+    return await this.roleRepository.create(roleData);
   }
 }
