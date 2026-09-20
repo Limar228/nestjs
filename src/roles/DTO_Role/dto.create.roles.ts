@@ -1,4 +1,4 @@
 export class DtoRoles {
-  readonly value: string;
+  readonly role: string;
   readonly description: string;
 }

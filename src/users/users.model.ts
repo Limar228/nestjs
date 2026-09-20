@@ -14,7 +14,6 @@ import { UsersRole } from "../users.roles.model/users.roles.model.js";
 interface UserInfo {
   name: string;
   email: string;
-  password: string;
 }
 
 @Table({ tableName: "users" })
@@ -22,7 +21,7 @@ export class Users extends Model<Users, UserInfo> {
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.INTEGER)
-  declare id: number;
+  declare UserId: number;
 
   @AllowNull(false)
   @Column(DataType.TEXT)
@@ -31,6 +30,10 @@ export class Users extends Model<Users, UserInfo> {
   @AllowNull(false)
   @Column(DataType.TEXT)
   declare email: string;
+
+  @AllowNull(false)
+  @Column(DataType.TEXT)
+  declare password: string;
 
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
   declare banned: boolean;

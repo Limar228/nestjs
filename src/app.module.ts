@@ -10,6 +10,10 @@ import { Users } from "./users/users.model.js";
 import { RolesModule } from "./roles/roles.module.js";
 import { UsersRole } from "./users.roles.model/users.roles.model.js";
 import { Roles } from "./roles/roles.model.js";
+import { AuthModule } from "./auth/auth.module.js";
+import { JwtModule } from "@nestjs/jwt";
+import { APP_GUARD } from "@nestjs/core";
+import { AuthGuard } from "./auth/auth.guards.js";
 
 @Module({
   imports: [
@@ -24,9 +28,13 @@ import { Roles } from "./roles/roles.model.js";
       username: process.env.DB_USERNAME,
       database: process.env.DB_NAME,
       autoLoadModels: true,
-      synchronize: true, //
+      synchronize: true,
+      // sync: {
+      //   force: true,
+      // },
     }),
     RolesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

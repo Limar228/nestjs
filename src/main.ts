@@ -1,6 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module.js";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { AuthGuard } from "./auth/auth.guards.js";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +14,10 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("api", app, document);
+
+  // const authGuard = app.get(AuthGuard);
+
+  // app.useGlobalGuards(authGuard);
 
   await app.listen(process.env.PORT ?? 3000);
 

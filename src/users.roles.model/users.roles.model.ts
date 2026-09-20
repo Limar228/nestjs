@@ -17,7 +17,7 @@ export class UsersRole extends Model<UsersRole> {
   @Column(DataType.INTEGER)
   idCount: number;
 
-  @ForeignKey(() => Users) //НЕПОНЯТНО
+  @ForeignKey(() => Users)
   @Column(DataType.INTEGER)
   userId: number;
 

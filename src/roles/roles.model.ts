@@ -12,7 +12,7 @@ import { Users } from "../users/users.model.js";
 import { UsersRole } from "../users.roles.model/users.roles.model.js";
 
 interface RoleInfo {
-  value: string;
+  role: string;
   description: string;
 }
 
@@ -21,16 +21,16 @@ export class Roles extends Model<Roles, RoleInfo> {
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.INTEGER)
-  declare id: number;
+  declare idRole: number;
 
   @AllowNull(false)
   @Column({ type: DataType.TEXT, unique: true })
-  declare value: string;
+  declare role: string;
 
   @AllowNull(false)
   @Column(DataType.TEXT)
   declare description: string;
 
-  @BelongsToMany(() => Users, () => UsersRole) //КАК ОНО СВЯЗЫВАЕТСЯ
+  @BelongsToMany(() => Users, () => UsersRole)
   declare users: Users[];
 }
