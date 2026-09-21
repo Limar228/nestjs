@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   async generateToken(user: Users) {
-    const payload = { email: user.email, id: user.UserId, role: user.roles };
+    const payload = { email: user.email, id: user.UserId, roles: user.roles };
     return {
       token: this.jwtService.sign(payload), //ТОКЕН КИДАТЬ В headers
     };

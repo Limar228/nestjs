@@ -1,4 +1,11 @@
-import { Controller, Post, Body, Get, UseGuards } from "@nestjs/common";
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  SetMetadata,
+} from "@nestjs/common";
 import { UsersService } from "./users.service.js";
 import { DtoUser } from "./dto/create.user.dto.js";
 import { AuthGuard } from "../auth/auth.guards.js";
@@ -9,14 +16,13 @@ import { RolesGuard } from "../auth/roles.guard.js";
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @Post("/create")
   async createUser(@Body() userData: DtoUser) {
     const data = await this.usersService.createUser(userData);
     return { message: "User created successfully", data: data };
   }
 
-  @Roles("ADMIN")
-  @UseGuards(AuthGuard, RolesGuard)
+  @Roles("USERS")
+  @UseGuards(RolesGuard, AuthGuard)
   @Get("/all")
   getAll() {
     return this.usersService.getAllUser();

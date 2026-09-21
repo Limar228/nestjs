@@ -19,26 +19,36 @@ export class RolesGuard implements CanActivate {
   ) {}
 
   canActivate(context: ExecutionContext): boolean {
-    console.log("GUARD ЗАПУСТИЛСЯ");
-
     try {
       type User = {
-        id: number | string;
+        id: number;
         email: string;
-        name: string;
+        name?: string;
+        roles: {
+          idRole: number;
+          role: string;
+          description: string;
+        }[];
       };
 
       type AuthRequest = Request & {
         user: User;
       };
 
-      const roles = this.reflector.getAllAndOverride<string[] | undefined>(
-        ROLES_KEY,
-        [context.getHandler(), context.getClass()],
-      );
-      console.log("ЧТО В РОЛЯХ", roles);
+      const rolesFromDecorator = this.reflector.getAllAndOverride<
+        string[] | undefined
+      >(ROLES_KEY, [context.getHandler(), context.getClass()]); //Работает по логике первое true
+      console.log(rolesFromDecorator);
 
-      if (!roles) {
+      /*
+      const permissions = this.reflector.get(
+  'permissions',
+  context.getHandler(),
+);
+      ПОЛУЧАЕТ ДАННЫЕ ИЗ КЛАССА И КОНТРОЛЛЕРА @Roles('USER') = ['USER']
+      */
+
+      if (!rolesFromDecorator) {
         return true;
       }
 
@@ -58,13 +68,16 @@ export class RolesGuard implements CanActivate {
           message: "Пользователь не авторизован",
         });
       }
-      const payload = this.jwtService.verify(token);
+
+      const payload: User = this.jwtService.verify(token);
       request.user = payload;
 
-      console.log(context.getHandler(), context.getClass());
-      return payload.roles.some((role: string) => roles.includes(role));
-      //КОНКРЕТНО РАЗОБРАТЬСЯ}
+      return payload.roles.some((roles) =>
+        rolesFromDecorator.includes(roles.role),
+      ); //Возвращает одну правду, подумать над лучшей реализацией
     } catch (error) {
+      console.log(error);
+
       throw new HttpException(
         "Польователь не авторизован",
         HttpStatus.FORBIDDEN,
